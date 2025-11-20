@@ -1,8 +1,10 @@
+#if 0
+
 #include "i2c_master.h"
 #include <Arduino.h>
 #include <driver/i2c.h>
 
-#define I2C_MASTER_NUM_PORT 0
+#define I2C_MASTER_NUM_PORT I2C_NUM_0 //0
 #define PIN_I2C_SDA 21
 #define PIN_I2C_SCL 22
 #define I2C_MASTER_TX_BUF_LEN 1024
@@ -182,3 +184,5 @@ std::vector<uint32_t> i2c_harvest_slaves(const std::vector<uint8_t>& slaves, uin
     }
     return nonce_vector;
 }
+
+#endif

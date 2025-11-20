@@ -42,7 +42,7 @@ static uint8_t interResult_aligned[64] __attribute__((aligned(256)));
 static uint8_t midstate_aligned[32] __attribute__((aligned(256)));
 static uint8_t hash_aligned[64] __attribute__((aligned(256)));
 
-#if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32C3)
+#if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C6)
 static inline void nerd_sha_hal_wait_idle()
 {
     while (REG_READ(SHA_BUSY_REG))

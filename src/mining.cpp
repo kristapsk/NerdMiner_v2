@@ -30,9 +30,17 @@
 #define RANDOM_NONCE_MASK 0xFFFFC000
 
 #ifdef HARDWARE_SHA265
+#ifdef CONFIG_IDF_TARGET_ESP32C6
+#include "drivers/devices/esp32c6_sha/dport_access.h"
+#include "drivers/devices/esp32c6_sha/sha_ll.h"
+// test
+#define esp_sha_acquire_hardware() /* nothing */
+#define esp_sha_release_hardware() /* nothing */
+#else
 #include <sha/sha_dma.h>
 #include <hal/sha_hal.h>
 #include <hal/sha_ll.h>
+#endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32)
 #include <sha/sha_parallel_engine.h>
@@ -59,7 +67,8 @@ double best_diff = 0.0;
 //Track mining stats in non volatile memory
 extern TSettings Settings;
 
-IPAddress serverIP(1, 1, 1, 1); //Temporally save poolIPaddres
+//IPAddress serverIP(1, 1, 1, 1); //Temporally save poolIPaddres
+IPAddress serverIP(138, 68, 91, 126); // pool.powermining.io
 
 //Global work data 
 static WiFiClient client;
@@ -86,6 +95,7 @@ bool checkPoolConnection(void) {
   
   //Resolve first time pool DNS and save IP
   if(serverIP == IPAddress(1,1,1,1)) {
+    Serial.printf("Resolving DNS for first time: %s (%p, now: '%s')\n", Settings.PoolAddress.c_str(), &serverIP, serverIP.toString().c_str());
     WiFi.hostByName(Settings.PoolAddress.c_str(), serverIP);
     Serial.printf("Resolved DNS and save ip (first time) got: %s\n", serverIP.toString());
   }
@@ -230,6 +240,7 @@ void runStratumWorker(void *name) {
   std::map<uint32_t, std::shared_ptr<Submition>> s_submition_map;
 
 #ifdef I2C_SLAVE
+  #warning "I2C SLAVE ENABLED"
   std::vector<uint8_t> i2c_slave_vector;
 
   //scan for i2c slaves
@@ -644,14 +655,14 @@ void minerWorkerSw(void * task_id)
     if (wdt_counter >= 8)
     {
       wdt_counter = 0;
-      esp_task_wdt_reset();
+      //esp_task_wdt_reset();
     }
   }
 }
 
 #ifdef HARDWARE_SHA265
 
-#if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32C3)
+#if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C6)
 
 static inline void nerd_sha_ll_fill_text_block_sha256(const void *input_text, uint32_t nonce)
 {
@@ -778,7 +789,7 @@ static inline void nerd_sha_hal_wait_idle()
     {}
 }
 
-//#define VALIDATION
+#define VALIDATION
 void minerWorkerHw(void * task_id)
 {
   unsigned int miner_id = (uint32_t)task_id;
@@ -890,10 +901,11 @@ void minerWorkerHw(void * task_id)
       vTaskDelay(2 / portTICK_PERIOD_MS);
 
     wdt_counter++;
-    if (wdt_counter >= 8)
+    //if (wdt_counter >= 8)
+    if (wdt_counter >= 4)
     {
       wdt_counter = 0;
-      esp_task_wdt_reset();
+      //esp_task_wdt_reset();
     }
   }
 }
@@ -1117,7 +1129,7 @@ void minerWorkerHw(void * task_id)
     } else
       vTaskDelay(2 / portTICK_PERIOD_MS);
 
-    esp_task_wdt_reset();
+    //esp_task_wdt_reset();
   }
 }
 

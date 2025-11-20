@@ -29,6 +29,8 @@
 #include "esp322432s028r.h"
 #elif defined(NERDMINER_T_QT)
 #include "lilygoT_QT.h"
+#elif defined(NERDMINER_T_QT_C6)
+#include "lilygoT_QT_C6.h"
 #elif defined(NERDMINER_T_DISPLAY_V1)
 #include "lilygoV1TDisplay.h"
 #elif defined(ESP32_CAM)

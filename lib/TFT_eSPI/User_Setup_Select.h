@@ -152,6 +152,9 @@
 #ifdef NERDMINER_T_QT
 #include <User_Setups/Setup211_LilyGo_T_QT_Pro_S3.h>         // For the LilyGo T-QT Pro S3 based ESP32S3 with GC9A01 128 x 128 TFT
 #endif
+#ifdef NERDMINER_T_QT_C6
+#include <User_Setups/Setup214_LilyGo_T_QT_C6.h>         // For the LilyGo T-QT C6 based ESP32C6 with GC9A01 128 x 128 TFT
+#endif
 #ifdef NERDMINER_S3_DONGLE
 #include <User_Setups/Setup209_LilyGo_T_Dongle_S3.h>      // For the LilyGo T-Dongle S3 based ESP32 with ST7735 80 x 160 TFT
 #endif

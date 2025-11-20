@@ -10,7 +10,7 @@
 #include <SPI.h>
 #endif
 #ifdef U8X8_HAVE_HW_I2C
-#include <Wire.h>
+//#include <Wire.h>
 #endif
 
 static uint8_t btc_icon[] = {
@@ -66,7 +66,7 @@ void serialPrint(unsigned long mElapsed) {
 void oledDisplay_Init(void)
 {
   Serial.println("OLED 0.42 display driver initialized");
-  Wire.begin(SDA_PIN, SCL_PIN);
+  //Wire.begin(SDA_PIN, SCL_PIN);
   u8g2.begin();
   u8g2.clear();
   u8g2.setFlipMode(1);

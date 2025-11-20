@@ -5,7 +5,7 @@
 #define LGFX_USE_V1
 
 #include <WiFi.h>
-#include <Wire.h>
+//#include <Wire.h>
 #include <SPI.h>
 #include <LovyanGFX.hpp>
 #include <lvgl.h>
